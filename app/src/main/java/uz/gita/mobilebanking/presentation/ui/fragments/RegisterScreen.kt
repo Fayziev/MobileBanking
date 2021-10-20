@@ -1,6 +1,7 @@
 package uz.gita.mobilebanking.presentation.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -26,6 +27,7 @@ class RegisterScreen : Fragment(R.layout.screen_register) {
     private var boolFirstName = false
     private var boolLastName = false
     private var boolPassword = false
+    private var boolConfirmPassword = false
     private var boolPhoneNumber = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
@@ -45,6 +47,12 @@ class RegisterScreen : Fragment(R.layout.screen_register) {
         password.addTextChangedListener {
             it?.let {
                 boolPassword = it.length > 6 && it.toString() == confirmPassword.text.toString()
+                check()
+            }
+        }
+        confirmPassword.addTextChangedListener {
+            it?.let {
+                boolConfirmPassword = it.length > 6 && it.toString() == password.text.toString()
                 check()
             }
         }
@@ -73,7 +81,11 @@ class RegisterScreen : Fragment(R.layout.screen_register) {
     }
 
     private fun check() {
-        binding.send.isEnabled = boolFirstName && boolLastName && boolPassword && boolPhoneNumber
+        Log.d("TTT","boolFirstName = $boolFirstName")
+        Log.d("TTT","boolLastName = $boolLastName")
+        Log.d("TTT","boolPassword = $boolPassword")
+        Log.d("TTT","boolPhoneNumber = $boolPhoneNumber")
+        binding.send.isEnabled = boolFirstName && boolLastName && (boolPassword || boolConfirmPassword) && boolPhoneNumber
     }
 
     private val disableRegisterObserver = Observer<Unit> {

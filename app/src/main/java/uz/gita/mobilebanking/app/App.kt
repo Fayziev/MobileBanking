@@ -1,10 +1,12 @@
 package uz.gita.mobilebanking.app
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import uz.gita.mobilebanking.BuildConfig
 import uz.gita.mobilebanking.data.MyPref
 
+@HiltAndroidApp
 class App : Application() {
 
     companion object {

@@ -7,11 +7,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import uz.gita.mobilebanking.R
 import uz.gita.mobilebanking.databinding.ScreenSplashBinding
 import uz.gita.mobilebanking.presentation.viewModel.SplashViewModel
 import uz.gita.mobilebanking.presentation.viewModel.impl.SplashViewModelImpl
 
+@AndroidEntryPoint
 class SplashScreen: Fragment(R.layout.screen_splash) {
 
     private val binding by viewBinding(ScreenSplashBinding::bind)
