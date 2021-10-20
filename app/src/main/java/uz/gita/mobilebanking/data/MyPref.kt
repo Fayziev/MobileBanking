@@ -2,7 +2,8 @@ package uz.gita.mobilebanking.data
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import uz.gita.mobilebanking.StartScreenEnum
+import uz.gita.mobilebanking.data.models.StartScreenEnum
+import uz.gita.mobilebanking.data.models.getStartScreen
 
 class MyPref private constructor(context: Context) {
 
@@ -26,6 +27,6 @@ class MyPref private constructor(context: Context) {
 
     var startScreen: StartScreenEnum
         set(value) = pref.edit().putString("screen", value.name).apply()
-        get() = pref.getString("screen", StartScreenEnum.LOGIN.name)!!
+        get() = pref.getString("screen", StartScreenEnum.LOGIN.name)!!.getStartScreen()
 
 }

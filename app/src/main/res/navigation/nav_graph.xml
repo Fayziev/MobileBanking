@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/authScreen"
         tools:layout="@layout/screen_auth"
-        android:name="uz.gita.mobilebanking.ui.fragments.AuthScreen"
+        android:name="uz.gita.mobilebanking.presentation.ui.fragments.AuthScreen"
         android:label="AuthScreen" >
         <action
             android:id="@+id/action_authScreen_to_registerScreen"
@@ -20,30 +20,29 @@
     <fragment
         tools:layout="@layout/screen_login"
         android:id="@+id/loginScreen"
-        android:name="uz.gita.mobilebanking.ui.fragments.LoginScreen"
+        android:name="uz.gita.mobilebanking.presentation.ui.fragments.LoginScreen"
         android:label="LoginScreen" >
         <action
             android:id="@+id/action_loginScreen_to_smsVerifyScreen"
             app:destination="@id/smsVerifyScreen" />
+        <action
+            android:id="@+id/action_loginScreen_to_resetPasswordScreen"
+            app:destination="@id/resetPasswordScreen" />
     </fragment>
     <fragment
         tools:layout="@layout/screen_main"
         android:id="@+id/mainScreen"
-        android:name="uz.gita.mobilebanking.ui.fragments.MainScreen"
-        android:label="MainScreen" >
-        <action
-            android:id="@+id/action_mainScreen_to_resetPasswordScreen"
-            app:destination="@id/resetPasswordScreen" />
-    </fragment>
+        android:name="uz.gita.mobilebanking.presentation.ui.fragments.MainScreen"
+        android:label="MainScreen" />
     <fragment
         tools:layout="@layout/screen_reset_password"
         android:id="@+id/resetPasswordScreen"
-        android:name="uz.gita.mobilebanking.ui.fragments.ResetPasswordScreen"
+        android:name="uz.gita.mobilebanking.presentation.ui.fragments.ResetPasswordScreen"
         android:label="ResetPasswordScreen" />
     <fragment
         tools:layout="@layout/screen_sms_verify"
         android:id="@+id/smsVerifyScreen"
-        android:name="uz.gita.mobilebanking.ui.fragments.SmsVerifyScreen"
+        android:name="uz.gita.mobilebanking.presentation.ui.fragments.SmsVerifyScreen"
         android:label="SmsVerifyScreen" >
         <action
             android:id="@+id/action_smsVerifyScreen_to_mainScreen"
@@ -52,7 +51,7 @@
     <fragment
         tools:layout="@layout/screen_splash"
         android:id="@+id/splashScreen"
-        android:name="uz.gita.mobilebanking.ui.fragments.SplashScreen"
+        android:name="uz.gita.mobilebanking.presentation.ui.fragments.SplashScreen"
         android:label="SplashScreen">
         <action
             android:id="@+id/action_splashScreen_to_authScreen"
@@ -64,7 +63,7 @@
     <fragment
         tools:layout="@layout/screen_register"
         android:id="@+id/registerScreen"
-        android:name="uz.gita.mobilebanking.ui.fragments.RegisterScreen"
+        android:name="uz.gita.mobilebanking.presentation.ui.fragments.RegisterScreen"
         android:label="RegisterScreen" >
         <action
             android:id="@+id/action_registerScreen_to_smsVerifyScreen"

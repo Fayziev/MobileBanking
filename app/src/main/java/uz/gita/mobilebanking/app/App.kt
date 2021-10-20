@@ -3,6 +3,7 @@ package uz.gita.mobilebanking.app
 import android.app.Application
 import timber.log.Timber
 import uz.gita.mobilebanking.BuildConfig
+import uz.gita.mobilebanking.data.MyPref
 
 class App : Application() {
 
@@ -16,6 +17,7 @@ class App : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+        MyPref.init(this)
         instance = this
     }
 }
