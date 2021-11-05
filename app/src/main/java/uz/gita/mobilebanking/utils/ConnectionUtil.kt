@@ -11,7 +11,7 @@ import uz.gita.mobilebanking.app.App
  *  data = 10/5/2020 , time = 15:23
  */
 
-fun isConnected(): Boolean = App.instance.isAvailableNetwork()
+fun     isConnected(): Boolean = App.instance.isAvailableNetwork()
 
 private fun Context.isAvailableNetwork(): Boolean {
     var result = false

@@ -7,11 +7,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import uz.gita.mobilebanking.R
 import uz.gita.mobilebanking.databinding.ScreenSmsVerifyBinding
 
-class SmsVerifyScreen:Fragment(R.layout.screen_sms_verify) {
+class SmsVerifyScreen : Fragment(R.layout.screen_sms_verify) {
 
     private val binding by viewBinding(ScreenSmsVerifyBinding::bind)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
 
     }
 }

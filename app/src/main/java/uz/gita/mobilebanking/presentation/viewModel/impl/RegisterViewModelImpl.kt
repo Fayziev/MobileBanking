@@ -26,7 +26,7 @@ class RegisterViewModelImpl @Inject constructor(private val repository: AuthRepo
 
     override fun registerUser(data: RegisterRequest) {
         if (!isConnected()) {
-            errorLivaData.value ="Internetga ulanib qayta urining"
+            errorLivaData.value ="Connect to the Internet and try again"
             return
         }
         progressLiveData.value = true
