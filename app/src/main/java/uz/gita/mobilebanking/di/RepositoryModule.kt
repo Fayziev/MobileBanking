@@ -6,9 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import uz.gita.mobilebanking.domain.AppRepository
 import uz.gita.mobilebanking.domain.AuthRepository
+import uz.gita.mobilebanking.domain.CardRepository
 import uz.gita.mobilebanking.domain.impl.AppRepositoryImpl
 import uz.gita.mobilebanking.domain.impl.AuthRepositoryImpl
-import uz.gita.mobilebanking.domain.impl.TestRepositoryImpl
+import uz.gita.mobilebanking.domain.impl.CardRepositoryImpl
 import javax.inject.Singleton
 
 
@@ -18,11 +19,15 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun getAppRepository(repository : AppRepositoryImpl) : AppRepository
+    abstract fun getAppRepository(repository: AppRepositoryImpl): AppRepository
 
     @Binds
     @Singleton
-    abstract fun getAuthRepository(repository : AuthRepositoryImpl) : AuthRepository
+    abstract fun getAuthRepository(repository: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun getCardRepository(impl: CardRepositoryImpl): CardRepository
 }
 
 

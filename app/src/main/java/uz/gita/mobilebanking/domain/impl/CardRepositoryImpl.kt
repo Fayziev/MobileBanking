@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
-import uz.gita.mobilebanking.data.MyPref
+import uz.gita.mobilebanking.data.pref.MyPref
 import uz.gita.mobilebanking.data.retrofit.ApiClient
 import uz.gita.mobilebanking.data.retrofit.api.AuthCard
 import uz.gita.mobilebanking.data.retrofit.request.AddCardRequest

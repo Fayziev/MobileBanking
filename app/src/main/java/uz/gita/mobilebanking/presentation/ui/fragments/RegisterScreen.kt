@@ -1,16 +1,17 @@
 package uz.gita.mobilebanking.presentation.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import uz.gita.mobilebankapplication.presentation.ui.screen.RegisterScreenDirections
 import uz.gita.mobilebanking.R
 import uz.gita.mobilebanking.data.retrofit.request.RegisterRequest
 import uz.gita.mobilebanking.databinding.ScreenRegisterBinding
@@ -23,86 +24,81 @@ import uz.gita.mobilebanking.utils.scope
 class RegisterScreen : Fragment(R.layout.screen_register) {
     private val binding by viewBinding(ScreenRegisterBinding::bind)
     private val viewModel: RegisterViewModel by viewModels<RegisterViewModelImpl>()
-    private var boolFirstName = false
-    private var boolLastName = false
-    private var boolPassword = false
-    private var boolConfirmPassword = false
-    private var boolPhoneNumber = false
+    private val enables = arrayOf(false, false, false, false, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.scope {
-        send.isEnabled = false
-        firstName.addTextChangedListener {
-            it?.let {
-                boolFirstName = it.length > 3
-                check()
-            }
-        }
-        lastName.addTextChangedListener {
-            it?.let {
-                boolLastName = it.length > 3
-                check()
-            }
-        }
-        password.addTextChangedListener {
-            it?.let {
-                boolPassword = it.length > 6 && it.toString() == confirmPassword.text.toString()
-                check()
-            }
-        }
-        confirmPassword.addTextChangedListener {
-            it?.let {
-                boolConfirmPassword = it.length > 6 && it.toString() == password.text.toString()
-                check()
-            }
-        }
-        telNumber.addTextChangedListener {
-            it?.let {
-                boolPhoneNumber = it.length == 13 && it.toString().startsWith("+998")
-                check()
-            }
-        }
-        send.setOnClickListener {
+
+        firstNameInput.addTextChangedListener(getTextWatcher { enables[0] = it.length > 4;check() })
+        lastNameInput.addTextChangedListener(getTextWatcher { enables[1] = it.length > 4;check() })
+        phoneInput.addTextChangedListener(getTextWatcher { enables[2] = checkPhoneInput(it);check() })
+        passwordInput.addTextChangedListener(getTextWatcher { enables[3] = checkPassword(it);check() })
+        confirmPasswordInput.addTextChangedListener(getTextWatcher { enables[4] = checkPassword(it);check() })
+
+        check()
+        sendRegisterButton.setOnClickListener {
             viewModel.registerUser(
                 RegisterRequest(
-                    firstName.text.toString(),
-                    lastName.text.toString(),
-                    password.text.toString(),
-                    telNumber.text.toString()
+                    firstNameInput.text.toString(),
+                    lastNameInput.text.toString(),
+                    phoneInput.text.toString(),
+                    passwordInput.text.toString()
                 )
             )
         }
 
-        viewModel.disableRegisterLiveData.observe(viewLifecycleOwner, disableRegisterObserver)
-        viewModel.enableRegisterLiveData.observe(viewLifecycleOwner, enableRegisterObserver)
-        viewModel.errorLivaData.observe(viewLifecycleOwner, errorObserver)
-        viewModel.progressLiveData.observe(viewLifecycleOwner, progressObserver)
-        viewModel.successLiveData.observe(viewLifecycleOwner, successObserver)
-    }
+        viewModel.disableRegisterButtonLiveData.observe(viewLifecycleOwner, disableRegisterObserver)
+        viewModel.enableRegisterButtonLiveData.observe(viewLifecycleOwner, enableRegisterObserver)
+        viewModel.errorMessageLiveData.observe(viewLifecycleOwner, errorMessageObserver)
+        viewModel.hideProgressLiveData.observe(viewLifecycleOwner, hideProgressObserver)
+        viewModel.showProgressLiveData.observe(viewLifecycleOwner, showProgressObserver)
+        viewModel.openVerifyScreenLiveData.observe(viewLifecycleOwner, openVerifyScreenObserver)
 
-    private fun check() {
-        Log.d("TTT", "boolFirstName = $boolFirstName")
-        Log.d("TTT", "boolLastName = $boolLastName")
-        Log.d("TTT", "boolPassword = $boolPassword")
-        Log.d("TTT", "boolPhoneNumber = $boolPhoneNumber")
-        binding.send.isEnabled =
-            boolFirstName && boolLastName && (boolPassword || boolConfirmPassword) && boolPhoneNumber
     }
 
     private val disableRegisterObserver = Observer<Unit> {
-        binding.send.isEnabled = false
+        binding.sendRegisterButton.isEnabled = false
     }
     private val enableRegisterObserver = Observer<Unit> {
-        binding.send.isEnabled = true
+        binding.sendRegisterButton.isEnabled = true
     }
-    private val errorObserver = Observer<String> {
+    private val showProgressObserver = Observer<Unit> {
+        binding.progress.show()
+    }
+    private val hideProgressObserver = Observer<Unit> {
+        binding.progress.hide()
+    }
+    private val errorMessageObserver = Observer<String> {
         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
     }
-    private val progressObserver = Observer<Boolean> {
-        if (it) binding.progress.show()
-        else binding.progress.hide()
+    private val openVerifyScreenObserver = Observer<Unit> {
+        findNavController().navigate(RegisterScreenDirections.actionRegisterScreenToVerifyScreen(binding.phoneInput.text.toString()))
     }
-    private val successObserver = Observer<String> {
-        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_registerScreen_to_smsVerifyScreen)
+
+
+    private fun checkPassword(password: String): Boolean = password.length >= 6
+
+    private fun checkPhoneInput(string: String): Boolean =
+        string.length == 13 && string.startsWith("+998", true)
+
+    private fun check() {
+        binding.sendRegisterButton.isEnabled =
+            (enables[0]
+                    && enables[1]
+                    && enables[2]
+                    && enables[3]
+                    && enables[4]
+                    && binding.passwordInput.text.toString() == binding.confirmPasswordInput.text.toString())
     }
+
+    private fun getTextWatcher(block: (String) -> Unit) =
+        object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                block.invoke(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+
+        }
+
 }

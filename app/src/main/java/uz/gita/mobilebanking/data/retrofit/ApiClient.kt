@@ -15,7 +15,7 @@ import timber.log.Timber
 import uz.gita.mobilebanking.BuildConfig.BASE_URL
 import uz.gita.mobilebanking.BuildConfig.LOGGING
 import uz.gita.mobilebanking.app.App
-import uz.gita.mobilebanking.data.MyPref
+import uz.gita.mobilebanking.data.pref.MyPref
 import uz.gita.mobilebanking.data.retrofit.response.VerifyResponse
 import uz.gita.mobilebanking.utils.myLog
 
@@ -84,9 +84,9 @@ object ApiClient {
                     .removeHeader("token")
                     .addHeader("token", pref.accessToken)
                     .build()
-                return@Interceptor chain.proceed(requestTwo)
+               chain.proceed(requestTwo)
             }
         }
-        return@Interceptor response
+       response
     }
 }

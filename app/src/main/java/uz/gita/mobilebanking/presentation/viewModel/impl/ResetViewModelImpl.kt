@@ -3,6 +3,7 @@ package uz.gita.mobilebanking.presentation.viewModel.impl
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.gita.mobilebanking.data.retrofit.request.NewPasswordRequest
@@ -10,9 +11,8 @@ import uz.gita.mobilebanking.domain.usecase.ResetUseCase
 import uz.gita.mobilebanking.presentation.viewModel.ResetViewModel
 import uz.gita.mobilebanking.utils.isConnected
 import javax.inject.Inject
-
+@HiltViewModel
 class ResetViewModelImpl @Inject constructor(private val useCase: ResetUseCase) : ViewModel(), ResetViewModel {
-
 
     override val openBackScreenLiveData = MutableLiveData<Unit>()
     override val errorMessageLiveData = MutableLiveData<String>()

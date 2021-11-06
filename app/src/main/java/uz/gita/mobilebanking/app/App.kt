@@ -4,7 +4,7 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import uz.gita.mobilebanking.BuildConfig
-import uz.gita.mobilebanking.data.MyPref
+import uz.gita.mobilebanking.data.pref.MyPref
 
 @HiltAndroidApp
 class App : Application() {

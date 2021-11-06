@@ -3,6 +3,7 @@ package uz.gita.mobilebanking.presentation.viewModel.impl
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.gita.mobilebanking.data.retrofit.request.AddCardRequest
@@ -12,6 +13,7 @@ import uz.gita.mobilebanking.presentation.viewModel.AddCardViewModel
 import uz.gita.mobilebanking.utils.isConnected
 import javax.inject.Inject
 
+@HiltViewModel
 class AddCardViewModelImpl @Inject constructor(
     private val useCase: AddCardUseCase
 ) : ViewModel(), AddCardViewModel {

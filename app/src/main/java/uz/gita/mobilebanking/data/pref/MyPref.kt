@@ -1,4 +1,4 @@
-package uz.gita.mobilebanking.data
+package uz.gita.mobilebanking.data.pref
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE

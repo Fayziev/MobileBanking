@@ -1,45 +1,54 @@
 package uz.gita.mobilebanking.presentation.viewModel.impl
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import uz.gita.mobilebanking.data.retrofit.request.RegisterRequest
-import uz.gita.mobilebanking.domain.AuthRepository
+import uz.gita.mobilebanking.domain.usecase.RegisterUseCase
 import uz.gita.mobilebanking.presentation.viewModel.RegisterViewModel
 import uz.gita.mobilebanking.utils.isConnected
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModelImpl @Inject constructor(private val repository: AuthRepository) : ViewModel(), RegisterViewModel {
+class RegisterViewModelImpl @Inject constructor(
+    private val useCase: RegisterUseCase
+) : ViewModel(), RegisterViewModel {
 
-    override val enableRegisterLiveData= MutableLiveData<Unit>()
-    override val disableRegisterLiveData= MutableLiveData<Unit>()
-    override val progressLiveData= MutableLiveData<Boolean>()
-    override val errorLivaData= MutableLiveData<String>()
-    override val successLiveData= MutableLiveData<String>()
 
-    override fun registerUser(data: RegisterRequest) {
+    override val openVerifyScreenLiveData = MutableLiveData<Unit>()
+    override val errorMessageLiveData = MutableLiveData<String>()
+    override val disableRegisterButtonLiveData = MutableLiveData<Unit>()
+    override val showProgressLiveData = MutableLiveData<Unit>()
+    override val hideProgressLiveData = MutableLiveData<Unit>()
+    override val enableRegisterButtonLiveData = MutableLiveData<Unit>()
+
+    override fun registerUser(request: RegisterRequest) {
+
         if (!isConnected()) {
-            errorLivaData.value ="Connect to the Internet and try again"
+            errorMessageLiveData.value = "Internet mavjud emas"
             return
         }
-        progressLiveData.value = true
-        disableRegisterLiveData.value = Unit
-        repository.registerUser(data).onEach {
-            progressLiveData.value = false
-            enableRegisterLiveData.value = Unit
-            it.onFailure { throwable ->
-                errorLivaData.value = throwable.message
+        showProgressLiveData.value = Unit
+        disableRegisterButtonLiveData.value = Unit
+
+        useCase.registerUser(request).onEach {
+
+            it.onSuccess {
+                enableRegisterButtonLiveData.value = Unit
+                openVerifyScreenLiveData.value = Unit
+                hideProgressLiveData.value = Unit
             }
-            it.onSuccess { message ->
-                successLiveData.value = message
+            it.onFailure { throwable ->
+                enableRegisterButtonLiveData.value = Unit
+                errorMessageLiveData.value = throwable.message
+                hideProgressLiveData.value = Unit
             }
         }.launchIn(viewModelScope)
+
     }
+
+
 }
