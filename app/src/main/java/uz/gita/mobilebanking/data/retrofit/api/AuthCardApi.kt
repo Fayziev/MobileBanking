@@ -12,19 +12,19 @@ import uz.gita.mobilebanking.data.retrofit.request.VerifyCardRequest
 import uz.gita.mobilebanking.data.retrofit.response.AllCardResponse
 import uz.gita.mobilebanking.data.retrofit.response.BasicResponse
 
-interface AuthCard {
+interface AuthCardApi {
     @POST("/api/v1/card/add-card")
-    suspend fun add(@Header("token") token: String, @Body request: AddCardRequest): Response<BasicResponse>
+    suspend fun add(@Body request: AddCardRequest): Response<BasicResponse>
 
     @POST("/api/v1/card/verify")
-    suspend fun verify(@Header("token") token: String, @Body request: VerifyCardRequest): Response<BasicResponse>
+    suspend fun verify(@Body request: VerifyCardRequest): Response<BasicResponse>
 
     @POST("/api/v1/card/edit-card")
-    suspend fun edit(@Header("token") token: String, @Body request: EditCardRequest): Response<BasicResponse>
+    suspend fun edit(@Body request: EditCardRequest): Response<BasicResponse>
 
     @POST("/api/v1/card/delete-card")
-    suspend fun delete(@Header("token") token: String, @Body request: DeleteCardRequest): Response<BasicResponse>
+    suspend fun delete(@Body request: DeleteCardRequest): Response<BasicResponse>
 
     @GET("/api/v1/card/all")
-    suspend fun get(@Header("token") token: String): Response<AllCardResponse>
+    suspend fun get(): Response<AllCardResponse>
 }

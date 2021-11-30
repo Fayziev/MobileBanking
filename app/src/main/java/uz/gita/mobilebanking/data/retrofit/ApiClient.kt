@@ -11,13 +11,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
 import uz.gita.mobilebanking.BuildConfig.BASE_URL
 import uz.gita.mobilebanking.BuildConfig.LOGGING
 import uz.gita.mobilebanking.app.App
 import uz.gita.mobilebanking.data.pref.MyPref
 import uz.gita.mobilebanking.data.retrofit.response.VerifyResponse
 import uz.gita.mobilebanking.utils.myLog
+import uz.gita.mobilebanking.utils.timber
 
 object ApiClient {
 
@@ -32,6 +32,7 @@ object ApiClient {
         return OkHttpClient.Builder()
             .addLogging()
             .addInterceptor(refreshInterceptor())
+            .addInterceptor(tokenInterceptor())
             .build()
     }
 
@@ -39,7 +40,7 @@ object ApiClient {
         if (LOGGING) {
             val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    Timber.tag("KKK").d(message, "HTTP")
+                    timber(message, "HTTP")
                 }
             })
             logging.level = HttpLoggingInterceptor.Level.BODY
@@ -49,12 +50,20 @@ object ApiClient {
         return this
     }
 
+    fun tokenInterceptor() = Interceptor {
+        val request = it.request()
+        val pref = MyPref()
+        val newRequest = request.newBuilder().removeHeader("token").addHeader("token", pref.accessToken).build()
+        val response = it.proceed(newRequest)
+        response
+    }
+
     private fun refreshInterceptor() = Interceptor { chain ->
         val request = chain.request()
         val response = chain.proceed(request)
         if (response.code == 401) {
             response.close()
-            val pref = MyPref.getPref()
+            val pref = MyPref()
             val data = JSONObject()
             data.put("phone", "+998900212303")
             val body =
@@ -84,9 +93,9 @@ object ApiClient {
                     .removeHeader("token")
                     .addHeader("token", pref.accessToken)
                     .build()
-               chain.proceed(requestTwo)
+                chain.proceed(requestTwo)
             }
         }
-       response
+        response
     }
 }

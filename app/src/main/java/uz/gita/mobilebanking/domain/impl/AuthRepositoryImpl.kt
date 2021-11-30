@@ -1,6 +1,5 @@
 package uz.gita.mobilebanking.domain.impl
 
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
@@ -13,10 +12,8 @@ import uz.gita.mobilebanking.domain.AuthRepository
 import uz.gita.mobilebanking.utils.timber
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor() : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(private val pref: MyPref) : AuthRepository {
     private val api = ApiClient.retrofit.create(AuthApi::class.java)
-    private val gson = Gson()
-    private val pref = MyPref.getPref()
 
     override fun registerUser(request: RegisterRequest): Flow<Result<Unit>> = flow {
         emit(getResult(api.register(request)))

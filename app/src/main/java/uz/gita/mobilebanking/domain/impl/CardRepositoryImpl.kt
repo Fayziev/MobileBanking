@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import uz.gita.mobilebanking.data.pref.MyPref
 import uz.gita.mobilebanking.data.retrofit.ApiClient
-import uz.gita.mobilebanking.data.retrofit.api.AuthCard
+import uz.gita.mobilebanking.data.retrofit.api.AuthCardApi
 import uz.gita.mobilebanking.data.retrofit.request.AddCardRequest
 import uz.gita.mobilebanking.data.retrofit.request.DeleteCardRequest
 import uz.gita.mobilebanking.data.retrofit.request.EditCardRequest
@@ -19,7 +19,7 @@ import uz.gita.mobilebanking.domain.CardRepository
 import javax.inject.Inject
 
 class CardRepositoryImpl @Inject constructor() : CardRepository {
-    private val api = ApiClient.retrofit.create(AuthCard::class.java)
+    private val api = ApiClient.retrofit.create(AuthCardApi::class.java)
     private val pref = MyPref.getPref()
     private val gson = Gson()
 

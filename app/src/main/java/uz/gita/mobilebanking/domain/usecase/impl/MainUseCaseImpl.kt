@@ -8,8 +8,9 @@ import uz.gita.mobilebanking.domain.AppRepository
 import uz.gita.mobilebanking.domain.AuthRepository
 import uz.gita.mobilebanking.domain.CardRepository
 import uz.gita.mobilebanking.domain.usecase.MainUseCase
+import javax.inject.Inject
 
-class MainUseCaseImpl constructor(
+class MainUseCaseImpl @Inject constructor(
     private val repositoryApp: AppRepository,
     private val repositoryAuth: AuthRepository,
     private val repositoryCard: CardRepository

@@ -6,8 +6,9 @@ import uz.gita.mobilebanking.data.retrofit.request.VerifyRequest
 import uz.gita.mobilebanking.domain.AppRepository
 import uz.gita.mobilebanking.domain.AuthRepository
 import uz.gita.mobilebanking.domain.usecase.VerifyUseCase
+import javax.inject.Inject
 
-class VerifyUseCaseImpl constructor(
+class VerifyUseCaseImpl @Inject constructor(
     private val repositoryAuth: AuthRepository,
     private val repositoryApp: AppRepository
 ) : VerifyUseCase {
